@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  broker_mqtt:
+    image: rabbitmq:3.11.10-management-alpine
+    container_name: broker_mqtt
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=EQ3MrrGBwn8bAgaUz9Hjb3LuvP    
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_volume:/var/lib/rabbitmq
+    networks:
+      - network_link_fog_cloud
+
+  database_fog:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: database_fog
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=4eFmpjPQLJK2NsoPrBQugHjo
+    ports:
+      - "54331:1433"
+    volumes:
+      - sqlserver_fog:/var/opt/mssql
+    networks:
+      - network_fog
+  
+  database_cloud:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: database_cloud
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=aFAkwgTmzz3ysHqcoi8TFUyE
+    ports:
+      - "54332:1433"
+    volumes:
+      - sqlserver_cloud:/var/opt/mssql
+    networks:
+      - network_cloud
+
+volumes:
+  rabbitmq_volume:
+  sqlserver_fog:
+  sqlserver_cloud:
+
+networks:
+  network_link_fog_cloud:
+    driver: bridge
+  network_fog:
+    driver: bridge
+  network_cloud:
+    driver: bridge
+  

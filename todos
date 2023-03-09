@@ -1,0 +1,8 @@
+TODO: Alterar o nome das tabelas e classes para HeartBeat ao invés de HeartRate
+    A tabela deve se chamar HeartBeatReadings
+
+TODO: Melhorar interação com o banco de dados
+    Implementação de UnitOfWork?
+    Trabalhar com EF para abstrair?
+
+TODO: Remover connection string do código
