@@ -6,3 +6,12 @@ TODO: Melhorar interação com o banco de dados
     Trabalhar com EF para abstrair?
 
 TODO: Remover connection string do código
+
+
+Infra
+
+TODO: Subir influx configurado (usuário, senha e db)
+
+TODO: Subir SQL Server com criação de base e tabelas (e dados?)
+
+TODO: Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)

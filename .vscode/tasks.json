@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Integrador.Gerador.Worker/Integrador.Gerador.Worker.csproj",
+                "${workspaceFolder}/src/Integrador.Produtor.Worker/Integrador.Produtor.Worker.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/Integrador.Gerador.Worker/Integrador.Gerador.Worker.csproj",
+                "${workspaceFolder}/src/Integrador.Produtor.Worker/Integrador.Produtor.Worker.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,32 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/Integrador.Gerador.Worker/Integrador.Gerador.Worker.csproj"
+                "${workspaceFolder}/src/Integrador.Produtor.Worker/Integrador.Produtor.Worker.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+
+        {
+            "label": "build-consumidor",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/Integrador.Consumidor.Worker/Integrador.Consumidor.Worker.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/src/Integrador.Consumidor.Worker/Integrador.Consumidor.Worker.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

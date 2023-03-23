@@ -2,10 +2,10 @@
 
 namespace Integrador.Consumidor.Worker;
 
-internal sealed class HelloMessageConsumerDefinition : ConsumerDefinition<HelloMessageConsumer>
+internal sealed class RegisterTemperatureConsumerDefinition : ConsumerDefinition<RegisterTemperatureConsumer>
 {
     protected override void ConfigureConsumer(IReceiveEndpointConfigurator endpointConfigurator, 
-        IConsumerConfigurator<HelloMessageConsumer> consumerConfigurator)
+        IConsumerConfigurator<RegisterTemperatureConsumer> consumerConfigurator)
     {
         endpointConfigurator.UseMessageRetry(r => r.Intervals(500, 1000));
     }

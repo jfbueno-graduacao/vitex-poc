@@ -2,18 +2,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (console)",
+            "name": "Produtor",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Integrador.Gerador.Worker/bin/Debug/net7.0/Integrador.Gerador.Worker.dll",
+            "program": "${workspaceFolder}/src/Integrador.Produtor.Worker/bin/Debug/net7.0/Integrador.Produtor.Worker.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Integrador.Gerador.Worker",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "cwd": "${workspaceFolder}/src/Integrador.Produtor.Worker",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Consumidor",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-consumidor",
+            "program": "${workspaceFolder}/src/Integrador.Consumidor.Worker/bin/Debug/net7.0/Integrador.Consumidor.Worker.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Integrador.Consumidor.Worker",
             "console": "internalConsole",
             "stopAtEntry": false
         },

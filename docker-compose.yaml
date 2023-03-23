@@ -16,7 +16,7 @@ services:
       - network_link_fog_cloud
 
   database_fog:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: database_fog
     environment:
       - ACCEPT_EULA=Y
@@ -27,17 +27,51 @@ services:
       - sqlserver_fog:/var/opt/mssql
     networks:
       - network_fog
-  
-  database_cloud:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: database_cloud
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=aFAkwgTmzz3ysHqcoi8TFUyE
+
+  dashboards:
+    image: grafana/grafana:9.4.3
+    container_name: dashboards
     ports:
-      - "54332:1433"
+      - "3000:3000"
+    networks:
+      - network_fog
+      - network_cloud
     volumes:
-      - sqlserver_cloud:/var/opt/mssql
+      - grafana_fog_data:/var/lib/grafana
+      - grafana_fog_home:/usr/share/grafana
+      - grafana_fog_logs:/usr/share/grafana
+      - grafana_fog_plugins:/var/lib/grafana/plugins
+      - grafana_fog_provisioning:/etc/grafana/provisioning
+  
+  # database_cloud:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   container_name: database_cloud
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - MSSQL_SA_PASSWORD=aFAkwgTmzz3ysHqcoi8TFUyE
+  #   ports:
+  #     - "54332:1433"
+  #   volumes:
+  #     - sqlserver_cloud:/var/opt/mssql
+  #   networks:
+  #     - network_cloud
+    
+  influxdb:
+    image: influxdb:2.6-alpine
+    container_name: influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_ORG=MinhaHistoriaDigital
+      - DOCKER_INFLUXDB_INIT_BUCKET=datalake_cloud
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=o7X6Q48Y8TycSLHnAVUNmkvDtnngfOS0ZM01JjNUBaQhq-j2NSlDlaZm6FkCLSIzceBE90pRlCveagZ5uHZC-g==
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=Pass123#
+    volumes:
+      # - ./infra/influxdb/config.yml:/etc/influxdb/config.yml:ro
+      - influxdb_data:/var/lib/influxdb
     networks:
       - network_cloud
 
@@ -45,6 +79,13 @@ volumes:
   rabbitmq_volume:
   sqlserver_fog:
   sqlserver_cloud:
+  opentsdb_data:
+  grafana_fog_data:
+  grafana_fog_home:
+  grafana_fog_logs:
+  grafana_fog_plugins:
+  grafana_fog_provisioning:
+  influxdb_data:
 
 networks:
   network_link_fog_cloud:

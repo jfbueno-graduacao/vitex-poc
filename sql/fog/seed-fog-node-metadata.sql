@@ -1,0 +1,1 @@
+INSERT INTO FogNodeMetadata ([Name]) VALUES ('Edifício XPTOZ');

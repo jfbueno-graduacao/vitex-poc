@@ -1,5 +1,5 @@
-using Integrador.Gerador.Worker;
-using Integrador.Gerador.Worker.Infra;
+using Integrador.Produtor.Worker;
+using Integrador.Produtor.Worker.Infra;
 using MassTransit;
 using System.Reflection;
 
@@ -32,7 +32,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         });
 
         services.AddHostedService<Worker>();
-        services.AddTransient<HeartRateRepository>();
+        services.AddTransient<TemperatureRepository>();
     })
     .Build();
 

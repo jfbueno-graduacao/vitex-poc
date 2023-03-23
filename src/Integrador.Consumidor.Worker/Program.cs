@@ -14,7 +14,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
 
             var entryAssembly = Assembly.GetEntryAssembly();
             
-            x.AddConsumer<HelloMessageConsumer, HelloMessageConsumerDefinition>();
+            x.AddConsumer<RegisterTemperatureConsumer, RegisterTemperatureConsumerDefinition>();
 
             x.AddSagaStateMachines(entryAssembly);
             x.AddSagas(entryAssembly);
