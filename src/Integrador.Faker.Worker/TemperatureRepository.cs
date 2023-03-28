@@ -9,11 +9,13 @@ public sealed class TemperatureRepository : IDisposable
 {
     private readonly IDbConnection _connection;
 
-    public TemperatureRepository()
+    public TemperatureRepository(IConfiguration configuration, ILogger<TemperatureRepository> logger)
     {
-        _connection = new SqlConnection(
-            "Server=localhost,54331;Database=VitalSignReadings;User Id=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;Encrypt=False"
-        );
+        var cs = configuration.GetConnectionString("Default");
+
+        _connection = new SqlConnection(cs);
+        
+        logger.LogInformation("Conectando ao banco: {ConnStr}", cs);
 
         _connection.Open();
     }

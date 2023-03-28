@@ -16,46 +16,35 @@ services:
       - network_link_fog_cloud
 
   database_fog:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
     container_name: database_fog
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=4eFmpjPQLJK2NsoPrBQugHjo
+      - MSSQL_PID=Developer
     ports:
       - "54331:1433"
     volumes:
-      - sqlserver_fog:/var/opt/mssql
+      - sqlserver_fog:/var/opt/mssql/data/
+      - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf
     networks:
       - network_fog
 
-  dashboards:
+  dashboards_fog:
     image: grafana/grafana:9.4.3
-    container_name: dashboards
+    container_name: dashboards_fog
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - network_fog
-      - network_cloud
     volumes:
       - grafana_fog_data:/var/lib/grafana
       - grafana_fog_home:/usr/share/grafana
       - grafana_fog_logs:/usr/share/grafana
       - grafana_fog_plugins:/var/lib/grafana/plugins
-      - grafana_fog_provisioning:/etc/grafana/provisioning
-  
-  # database_cloud:
-  #   image: mcr.microsoft.com/mssql/server:2022-latest
-  #   container_name: database_cloud
-  #   environment:
-  #     - ACCEPT_EULA=Y
-  #     - MSSQL_SA_PASSWORD=aFAkwgTmzz3ysHqcoi8TFUyE
-  #   ports:
-  #     - "54332:1433"
-  #   volumes:
-  #     - sqlserver_cloud:/var/opt/mssql
-  #   networks:
-  #     - network_cloud
-    
+      - grafana_fog_provisioning:/etc/grafana/provisioning    
+
   influxdb:
     image: influxdb:2.6-alpine
     container_name: influxdb
@@ -71,9 +60,36 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=Pass123#
     volumes:
       # - ./infra/influxdb/config.yml:/etc/influxdb/config.yml:ro
-      - influxdb_data:/var/lib/influxdb
+      - influxdb_data:/var/lib/influxdb2
     networks:
       - network_cloud
+
+  dashboards_cloud:
+    user: root
+    image: grafana/grafana:9.4.3
+    container_name: dashboards_cloud
+    ports:
+      - "3002:3000"
+    networks:
+      - network_cloud
+    volumes:
+      - grafana_cloud_data:/var/lib/grafana
+      - grafana_cloud_home:/usr/share/grafana
+      - grafana_cloud_logs:/usr/share/grafana
+      - grafana_cloud_plugins:/var/lib/grafana/plugins
+      - grafana_cloud_provisioning:/etc/grafana/provisioning 
+
+  # integrador-faker:
+  #   build:
+  #     context: ./src/Integrador.Faker.Worker/
+  #     dockerfile: Dockerfile
+  #   container_name: integrador-faker
+  #   environment:
+  #     - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;
+  #   networks:
+  #     - network_fog
+  #   depends_on:
+  #     - database_fog
 
 volumes:
   rabbitmq_volume:
@@ -86,6 +102,11 @@ volumes:
   grafana_fog_plugins:
   grafana_fog_provisioning:
   influxdb_data:
+  grafana_cloud_data:
+  grafana_cloud_home:
+  grafana_cloud_logs:
+  grafana_cloud_plugins:
+  grafana_cloud_provisioning:
 
 networks:
   network_link_fog_cloud:

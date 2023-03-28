@@ -15,3 +15,7 @@ TODO: Subir influx configurado (usuário, senha e db)
 TODO: Subir SQL Server com criação de base e tabelas (e dados?)
 
 TODO: Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)
+
+Dashboards
+
+TODO: Criar painel com acompanhamento de casos de febre (se alguém atingiu >=38 dentro do período, mostrar toda a evolução da pessoa)
