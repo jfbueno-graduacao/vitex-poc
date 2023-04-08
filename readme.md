@@ -2,9 +2,11 @@
 
 ### Código
 
+- [ ] Implementar envio em lote para o broker
+
 - [ ] Melhorar interação com o banco de dados
-    Implementação de UnitOfWork?
-    Trabalhar com EF para abstrair?
+    - Implementação de UnitOfWork?
+    - Trabalhar com EF para abstrair?
 
 - [x] Remover connection string do código
 
