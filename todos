@@ -1,21 +1,20 @@
-TODO: Alterar o nome das tabelas e classes para HeartBeat ao invés de HeartRate
-    A tabela deve se chamar HeartBeatReadings
+### Código
 
-TODO: Melhorar interação com o banco de dados
+- [ ] Melhorar interação com o banco de dados
     Implementação de UnitOfWork?
     Trabalhar com EF para abstrair?
 
-TODO: Remover connection string do código
+- [x] Remover connection string do código
 
 
-Infra
+### Infra
 
-TODO: Subir influx configurado (usuário, senha e db)
+- [ ] Subir SQL Server com criação de base e tabelas (e dados?)
 
-TODO: Subir SQL Server com criação de base e tabelas (e dados?)
+- [x] Subir influx configurado (usuário, senha e db)
 
-TODO: Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)
+- [ ] Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)
 
-Dashboards
+### Dashboards
 
-TODO: Criar painel com acompanhamento de casos de febre (se alguém atingiu >=38 dentro do período, mostrar toda a evolução da pessoa)
+- [x] Criar painel com acompanhamento de casos de febre (se alguém atingiu >=38 dentro do período, mostrar toda a evolução da pessoa)

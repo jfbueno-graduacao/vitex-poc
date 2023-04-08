@@ -1,14 +1,14 @@
 ﻿using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
-using Integrador.Common.Contracts;
+using Integrador.Common.MessageBus.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Integrador.Consumidor.Worker;
+namespace Integrador.Consumidor.Worker.RegisterTemperature;
 
 internal sealed class RegisterTemperatureConsumer : IConsumer<TemperatureToInsertMessage>
 {

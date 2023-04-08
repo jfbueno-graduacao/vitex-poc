@@ -11,7 +11,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - rabbitmq_volume:/var/lib/rabbitmq
+      - ./infra/volumes/cloud/rabbitmq/:/var/lib/rabbitmq
     networks:
       - network_link_fog_cloud
 
@@ -26,7 +26,7 @@ services:
     ports:
       - "54331:1433"
     volumes:
-      - sqlserver_fog:/var/opt/mssql/data/
+      - ./infra/volumes/fog/mssql:/var/opt/mssql/data/
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf
     networks:
       - network_fog
@@ -39,13 +39,11 @@ services:
     networks:
       - network_fog
     volumes:
-      - grafana_fog_data:/var/lib/grafana
-      - grafana_fog_home:/usr/share/grafana
-      - grafana_fog_logs:/usr/share/grafana
-      - grafana_fog_plugins:/var/lib/grafana/plugins
-      - grafana_fog_provisioning:/etc/grafana/provisioning    
+      - ./infra/volumes/fog/grafana/data:/var/lib/grafana
+      - ./infra/volumes/fog/grafana/plugins:/var/lib/grafana/plugins
+      - ./infra/volumes/fog/grafana/provisioning:/etc/grafana/provisioning    
 
-  influxdb:
+  database_cloud:
     image: influxdb:2.6-alpine
     container_name: influxdb
     restart: always
@@ -60,7 +58,7 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=Pass123#
     volumes:
       # - ./infra/influxdb/config.yml:/etc/influxdb/config.yml:ro
-      - influxdb_data:/var/lib/influxdb2
+      - ./infra/volumes/cloud/influxdb:/var/lib/influxdb2
     networks:
       - network_cloud
 
@@ -73,11 +71,9 @@ services:
     networks:
       - network_cloud
     volumes:
-      - grafana_cloud_data:/var/lib/grafana
-      - grafana_cloud_home:/usr/share/grafana
-      - grafana_cloud_logs:/usr/share/grafana
-      - grafana_cloud_plugins:/var/lib/grafana/plugins
-      - grafana_cloud_provisioning:/etc/grafana/provisioning 
+      - ./infra/volumes/cloud/grafana/data:/var/lib/grafana
+      - ./infra/volumes/cloud/grafana/plugins:/var/lib/grafana/plugins
+      - ./infra/volumes/cloud/grafana/provisioning:/etc/grafana/provisioning 
 
   # integrador-faker:
   #   build:
@@ -90,23 +86,6 @@ services:
   #     - network_fog
   #   depends_on:
   #     - database_fog
-
-volumes:
-  rabbitmq_volume:
-  sqlserver_fog:
-  sqlserver_cloud:
-  opentsdb_data:
-  grafana_fog_data:
-  grafana_fog_home:
-  grafana_fog_logs:
-  grafana_fog_plugins:
-  grafana_fog_provisioning:
-  influxdb_data:
-  grafana_cloud_data:
-  grafana_cloud_home:
-  grafana_cloud_logs:
-  grafana_cloud_plugins:
-  grafana_cloud_provisioning:
 
 networks:
   network_link_fog_cloud:

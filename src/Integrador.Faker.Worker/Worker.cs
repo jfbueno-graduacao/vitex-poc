@@ -1,4 +1,5 @@
 using Integrador.Faker.Worker.Model;
+using Integrador.Faker.Worker.Repositories;
 
 namespace Integrador.Faker.Worker;
 
@@ -32,14 +33,8 @@ public class Worker : BackgroundService
             var readingsToInsert = people.Select(person =>
                 new Temperature(person.Id, person.VariateTemperature(), timestamp)
             );
-            
 
             await _temperatureRepository.Insert(readingsToInsert);
-
-            //_logger.LogInformation(
-            //    "Generated new reading for person {PersonId}",
-            //    temperatureToInsert.PersonId
-            //);
 
             await Task.Delay(60_000 * 1, stoppingToken); // 1 Minutos
         }

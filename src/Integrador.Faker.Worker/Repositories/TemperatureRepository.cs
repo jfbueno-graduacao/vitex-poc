@@ -3,7 +3,7 @@ using Integrador.Faker.Worker.Model;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Integrador.Faker.Worker;
+namespace Integrador.Faker.Worker.Repositories;
 
 public sealed class TemperatureRepository : IDisposable
 {
@@ -11,11 +11,10 @@ public sealed class TemperatureRepository : IDisposable
 
     public TemperatureRepository(IConfiguration configuration, ILogger<TemperatureRepository> logger)
     {
-        var cs = configuration.GetConnectionString("Default");
+        var connectionString = configuration.GetConnectionString("Default")
+            ?? throw new InvalidOperationException("Default connection string is empty");
 
-        _connection = new SqlConnection(cs);
-        
-        logger.LogInformation("Conectando ao banco: {ConnStr}", cs);
+        _connection = new SqlConnection(connectionString);
 
         _connection.Open();
     }

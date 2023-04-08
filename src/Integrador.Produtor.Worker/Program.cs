@@ -1,5 +1,7 @@
 using Integrador.Produtor.Worker;
-using Integrador.Produtor.Worker.Infra;
+using Integrador.Produtor.Worker.Infra.Database;
+using Integrador.Produtor.Worker.Infra.MessageBus;
+using Integrador.Produtor.Worker.Workers;
 using MassTransit;
 using System.Reflection;
 
@@ -31,8 +33,14 @@ using IHost host = Host.CreateDefaultBuilder(args)
             });
         });
 
-        services.AddHostedService<Worker>();
+        services.AddHostedService<DefaultWorker>();
+        services.AddHostedService<HighTemperatureMonitorWorker>();
+        services.AddHostedService<HighTemperatureWorker>();
+
         services.AddTransient<TemperatureRepository>();
+        services.AddTransient<TemperatureBusProxy>();
+
+        services.AddSingleton<HighTemperatureSharedState>();
     })
     .Build();
 

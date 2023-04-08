@@ -1,4 +1,5 @@
 using Integrador.Consumidor.Worker;
+using Integrador.Consumidor.Worker.RegisterTemperature;
 using MassTransit;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;

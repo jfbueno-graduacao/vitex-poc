@@ -3,17 +3,18 @@ using Integrador.Faker.Worker.Model;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Integrador.Faker.Worker;
+namespace Integrador.Faker.Worker.Repositories;
 
 public sealed class PeopleRepository : IDisposable
 {
     private readonly IDbConnection _connection;
 
-    public PeopleRepository()
+    public PeopleRepository(IConfiguration configuration)
     {
-        _connection = new SqlConnection(
-            "Server=localhost,54331;Database=VitalSignReadings;User Id=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;Encrypt=False"
-        );
+        var connectionString = configuration.GetConnectionString("Default")
+            ?? throw new InvalidOperationException("Default connection string is empty");
+
+        _connection = new SqlConnection(connectionString);
 
         _connection.Open();
     }

@@ -1,4 +1,4 @@
-﻿namespace Integrador.Produtor.Worker.Infra;
+﻿namespace Integrador.Produtor.Worker.Infra.Database;
 
 public record Temperature(
     Guid Id, Guid PersonId, decimal Value,

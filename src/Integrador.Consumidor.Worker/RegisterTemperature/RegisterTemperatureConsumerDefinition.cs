@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace Integrador.Consumidor.Worker;
+namespace Integrador.Consumidor.Worker.RegisterTemperature;
 
 internal sealed class RegisterTemperatureConsumerDefinition : ConsumerDefinition<RegisterTemperatureConsumer>
 {

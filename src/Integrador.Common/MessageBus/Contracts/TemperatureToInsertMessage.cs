@@ -1,4 +1,4 @@
-﻿namespace Integrador.Common.Contracts;
+﻿namespace Integrador.Common.MessageBus.Contracts;
 
 /// <summary>
 /// Contract of the message sent to the queue to register a temperature reading

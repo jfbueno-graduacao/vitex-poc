@@ -1,4 +1,5 @@
 using Integrador.Faker.Worker;
+using Integrador.Faker.Worker.Repositories;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
