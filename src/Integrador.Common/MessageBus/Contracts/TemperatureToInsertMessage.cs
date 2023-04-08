@@ -11,7 +11,7 @@ public record TemperatureToInsertMessage
     public Guid Id { get; init; }
 
     /// <summary>
-    /// Identifier of the subject whom the temperature reading belongs to
+    /// Identifier of the subject whose the temperature reading belongs to
     /// </summary>
     public Guid PersonId { get; init; }
 
