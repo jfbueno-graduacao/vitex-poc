@@ -15,9 +15,9 @@
 
 - [ ] Subir SQL Server com criação de base e tabelas (e dados?)
 
-- [x] Subir influx configurado (usuário, senha e db)
-
 - [ ] Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)
+
+- [x] Subir influx configurado (usuário, senha e db)
 
 ### Dashboards
 
