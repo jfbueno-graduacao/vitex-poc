@@ -1,9 +1,5 @@
 using Integrador.Produtor.Worker.Infra.Database;
 using Integrador.Produtor.Worker.Infra.MessageBus;
-using MassTransit;
-using System.IO.Compression;
-using System.Text;
-using System.Text.Json;
 
 namespace Integrador.Produtor.Worker.Workers;
 

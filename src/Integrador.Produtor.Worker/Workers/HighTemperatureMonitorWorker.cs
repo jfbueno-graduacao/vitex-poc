@@ -2,7 +2,7 @@
 
 namespace Integrador.Produtor.Worker.Workers;
 
-internal class HighTemperatureMonitorWorker : BackgroundService
+internal sealed class HighTemperatureMonitorWorker : BackgroundService
 {
     private readonly HighTemperatureSharedState _sharedState;
     private readonly ILogger<HighTemperatureMonitorWorker> _logger;

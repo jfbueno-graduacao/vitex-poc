@@ -1,6 +1,6 @@
 ﻿namespace Integrador.Produtor.Worker.Infra.Database;
 
-public record Temperature(
+public sealed record Temperature(
     Guid Id, Guid PersonId, decimal Value,
     DateTime Timestamp, bool ReadForIntegration
 );

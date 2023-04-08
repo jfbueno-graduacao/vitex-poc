@@ -3,7 +3,7 @@
 /// <summary>
 /// Contract of the message sent to the queue to register a temperature reading
 /// </summary>
-public record TemperatureToInsertMessage
+public sealed record TemperatureToInsertMessage
 {
     /// <summary>
     /// Unique identifier of the temperature reading

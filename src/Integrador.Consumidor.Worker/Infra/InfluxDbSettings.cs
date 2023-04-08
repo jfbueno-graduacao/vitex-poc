@@ -2,17 +2,17 @@
 
 namespace Integrador.Consumidor.Worker.Infra;
 
-internal class InfluxDbSettings
+internal sealed class InfluxDbSettings
 {
     [Required]
-    public string Host { get; set; }
+    public string Host { get; set; } = "";
 
     [Required]
-    public string Token { get; set; }
+    public string Token { get; set; } = "";
 
     [Required]
-    public string Organization { get; set; }
+    public string Organization { get; set; } = "";
 
     [Required]
-    public string Bucket { get; set; }
+    public string Bucket { get; set; } = "";
 }

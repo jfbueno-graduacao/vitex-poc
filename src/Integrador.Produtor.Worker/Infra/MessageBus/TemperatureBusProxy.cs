@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Integrador.Produtor.Worker.Infra.MessageBus;
 
-internal class TemperatureBusProxy
+internal sealed class TemperatureBusProxy
 {
     private readonly IBus _messageBus;
 

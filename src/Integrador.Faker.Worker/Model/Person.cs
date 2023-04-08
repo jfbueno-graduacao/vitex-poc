@@ -1,6 +1,6 @@
 namespace Integrador.Faker.Worker.Model;
 
-public record Person(Guid Id, DateTime BirthDate, decimal BaseTemperature)
+public sealed record Person(Guid Id, DateTime BirthDate, decimal BaseTemperature)
 {
     private static readonly Random Random = new();
 

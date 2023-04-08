@@ -3,12 +3,11 @@ using Integrador.Faker.Worker.Repositories;
 
 namespace Integrador.Faker.Worker;
 
-public class Worker : BackgroundService
+public sealed class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
     private readonly TemperatureRepository _temperatureRepository;
     private readonly PeopleRepository _peopleRepository;
-    private readonly Random _random = new();
 
     public Worker(
         ILogger<Worker> logger,
