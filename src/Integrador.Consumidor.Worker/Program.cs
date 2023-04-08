@@ -1,12 +1,21 @@
-using Integrador.Consumidor.Worker;
+using Integrador.Consumidor.Worker.Infra;
 using Integrador.Consumidor.Worker.RegisterTemperature;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 
 using IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((context, services) =>
     {
+        services.AddOptions<InfluxDbSettings>()
+            .Bind(context.Configuration.GetSection("InfluxDbConfig"))
+            .ValidateDataAnnotations();
+
+        //services.Configure<InfluxDbSettings>(
+        //    context.Configuration.GetSection("InfluxDbConfig")
+        //);
+
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();

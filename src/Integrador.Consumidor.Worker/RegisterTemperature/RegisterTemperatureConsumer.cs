@@ -2,10 +2,10 @@
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Integrador.Common.MessageBus.Contracts;
+using Integrador.Consumidor.Worker.Infra;
 using MassTransit;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace Integrador.Consumidor.Worker.RegisterTemperature;
@@ -13,34 +13,22 @@ namespace Integrador.Consumidor.Worker.RegisterTemperature;
 internal sealed class RegisterTemperatureConsumer : IConsumer<TemperatureToInsertMessage>
 {
     private readonly ILogger<RegisterTemperatureConsumer> _logger;
-    private readonly IConfiguration _configuration;
+    private readonly InfluxDbSettings _influxDbSettings;
 
     public RegisterTemperatureConsumer(
         ILogger<RegisterTemperatureConsumer> logger,
-        IConfiguration configuration
+        IOptions<InfluxDbSettings> optionsInfluxDbSettings
     )
     {
         _logger = logger;
-        _configuration = configuration;
+        _influxDbSettings = optionsInfluxDbSettings.Value;
     }
 
     public Task Consume(ConsumeContext<TemperatureToInsertMessage> context)
     {
-        string token = _configuration["InfluxDbConfig:Token"] 
-            ?? throw new InvalidOperationException("InfluxDB token not found");
-
-        string bucket = _configuration["InfluxDbConfig:Bucket"] 
-            ?? throw new InvalidOperationException("InfluxDB bucket not found");
-            
-        string org = _configuration["InfluxDbConfig:Organization"] 
-            ?? throw new InvalidOperationException("InfluxDB org not found");
-
-        string influxDbUrl = _configuration["InfluxDbConfig:Host"] 
-            ?? throw new InvalidOperationException("InfluxDB host url not found");
-
         using var client = new InfluxDBClient(
-            url: influxDbUrl,
-            token: token
+            url: _influxDbSettings.Host,
+            token: _influxDbSettings.Token
         );
 
         var message = context.Message;
@@ -56,7 +44,12 @@ internal sealed class RegisterTemperatureConsumer : IConsumer<TemperatureToInser
         var lp = point.ToLineProtocol();
         _logger.LogInformation("Line protocol to send: {LineProtocol}", lp);
 
-        writeApi.WriteRecord(record: lp, bucket: bucket, org: org, precision: WritePrecision.S);
+        writeApi.WriteRecord(
+            record: lp, 
+            bucket: _influxDbSettings.Bucket, 
+            org: _influxDbSettings.Organization, 
+            precision: WritePrecision.S
+        );
 
         _logger.LogInformation(
             "Registered temperature with id {Id} and value {Value}", 
