@@ -7,12 +7,6 @@ internal sealed class HighTemperatureSharedState
     private ConcurrentBag<Guid> _state = new();
 
     /// <summary>
-    /// Define os itens do estado compartilhado
-    /// </summary>
-    public void SetItems(IReadOnlyCollection<Guid> peopleIds) 
-        => _state = new ConcurrentBag<Guid>(peopleIds);
-
-    /// <summary>
     /// Define se há algum item no estado compartilhado
     /// </summary>
     public bool HasAny => !_state.IsEmpty;
@@ -26,4 +20,12 @@ internal sealed class HighTemperatureSharedState
     /// Retorna todos os itens do estado compartilhado 
     /// </summary>
     public IReadOnlyCollection<Guid> Items => _state;
+    
+    /// <summary>
+    /// Define os itens do estado compartilhado
+    /// </summary>
+    public void SetItems(IReadOnlyCollection<Guid> peopleIds)
+        => _state = new ConcurrentBag<Guid>(peopleIds);
+
+    public void Clear() => _state.Clear();
 }

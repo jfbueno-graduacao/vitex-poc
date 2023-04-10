@@ -36,7 +36,10 @@ internal sealed class HighTemperatureMonitorWorker : BackgroundService
                     "Setting their ids to shared state",
                     idsWithHighTemperature.Count
                 );
-
+            }
+            else
+            {
+                _sharedState.Clear();
             }
             
             await Task.Delay(2_000, stoppingToken);

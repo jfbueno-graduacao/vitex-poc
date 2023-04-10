@@ -37,7 +37,11 @@ internal sealed class HighTemperatureWorker : BackgroundService
                 var temperatureReadings =
                     await _repository.GetNotIntegratedValuesFromPeopleIds(_sharedState.Items);
 
-                await _messageBusProxy.Publish(temperatureReadings, stoppingToken);
+                // Thread-safety check
+                // The SharedState could be updated in between an executing of the default worker 
+                // (which doesn't check the SharedState getting database itens and sending it)
+                if (temperatureReadings.Any())
+                    await _messageBusProxy.Publish(temperatureReadings, stoppingToken);
 
             }
             
