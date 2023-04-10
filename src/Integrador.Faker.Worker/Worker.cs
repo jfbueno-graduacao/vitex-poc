@@ -35,7 +35,7 @@ public sealed class Worker : BackgroundService
 
             await _temperatureRepository.Insert(readingsToInsert);
 
-            await Task.Delay(60_000 * 1, stoppingToken); // 1 Minutos
+            await Task.Delay(60_000 / 2, stoppingToken); // 0.5 minutos
         }
     }
 

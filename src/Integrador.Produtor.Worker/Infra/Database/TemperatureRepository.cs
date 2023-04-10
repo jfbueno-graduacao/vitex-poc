@@ -30,7 +30,7 @@ internal sealed class TemperatureRepository : IDisposable
             @"
                 DROP TABLE IF EXISTS #Values;
             
-                SELECT TOP 75 * INTO #Values
+                SELECT TOP 250 * INTO #Values
                 FROM [Temperature] 
                 WHERE ReadForIntegration = 0 ORDER BY [Timestamp] ASC;
 

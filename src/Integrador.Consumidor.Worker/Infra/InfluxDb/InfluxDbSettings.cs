@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Integrador.Consumidor.Worker.Infra;
+namespace Integrador.Consumidor.Worker.Infra.InfluxDb;
 
 internal sealed class InfluxDbSettings
 {

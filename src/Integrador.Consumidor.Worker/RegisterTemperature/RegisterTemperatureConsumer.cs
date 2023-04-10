@@ -2,7 +2,7 @@
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Integrador.Common.MessageBus.Contracts;
-using Integrador.Consumidor.Worker.Infra;
+using Integrador.Consumidor.Worker.Infra.InfluxDb;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

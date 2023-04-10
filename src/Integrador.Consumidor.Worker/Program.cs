@@ -1,5 +1,5 @@
-using Integrador.Consumidor.Worker.Infra;
-using Integrador.Consumidor.Worker.RegisterTemperature;
+using Integrador.Consumidor.Worker.Infra.InfluxDb;
+using Integrador.Consumidor.Worker.RegisterTemperatureBatch;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +21,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
 
             var entryAssembly = Assembly.GetEntryAssembly();
             
-            x.AddConsumer<RegisterTemperatureConsumer, RegisterTemperatureConsumerDefinition>();
+            x.AddConsumer<RegisterTemperatureBatchConsumer, RegisterTemperatureBatchConsumerDefinition>();
 
             x.AddSagaStateMachines(entryAssembly);
             x.AddSagas(entryAssembly);
@@ -38,6 +38,8 @@ using IHost host = Host.CreateDefaultBuilder(args)
                 busConfigurator.ConfigureEndpoints(busRegistrationContext);
             });
         });
+
+        services.AddTransient<TemperatureRepository>();
     })
     .Build();
 
