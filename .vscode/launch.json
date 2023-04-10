@@ -2,24 +2,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Produtor",
+            "name": "Producer",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Integrador.Produtor.Worker/bin/Debug/net7.0/Integrador.Produtor.Worker.dll",
+            "program": "${workspaceFolder}/src/Connector.Producer.Worker/bin/Debug/net7.0/Connector.Producer.Worker.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Integrador.Produtor.Worker",
+            "cwd": "${workspaceFolder}/src/Connector.Producer.Worker",
             "console": "internalConsole",
             "stopAtEntry": false
         },
         {
-            "name": "Consumidor",
+            "name": "Consumer",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-consumidor",
-            "program": "${workspaceFolder}/src/Integrador.Consumidor.Worker/bin/Debug/net7.0/Integrador.Consumidor.Worker.dll",
+            "preLaunchTask": "build-consumer",
+            "program": "${workspaceFolder}/src/Connector.Consumer.Worker/bin/Debug/net7.0/Connector.Consumer.Worker.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Integrador.Consumidor.Worker",
+            "cwd": "${workspaceFolder}/src/Connector.Consumer.Worker",
             "console": "internalConsole",
             "stopAtEntry": false
         },

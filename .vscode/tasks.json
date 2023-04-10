@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Integrador.Produtor.Worker/Integrador.Produtor.Worker.csproj",
+                "${workspaceFolder}/src/Connector.Producer.Worker/Connector.Producer.Worker.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/Integrador.Produtor.Worker/Integrador.Produtor.Worker.csproj",
+                "${workspaceFolder}/src/Connector.Producer.Worker/Connector.Producer.Worker.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,18 +33,18 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/Integrador.Produtor.Worker/Integrador.Produtor.Worker.csproj"
+                "${workspaceFolder}/src/Connector.Producer.Worker/Connector.Producer.Worker.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
 
         {
-            "label": "build-consumidor",
+            "label": "build-consumer",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Integrador.Consumidor.Worker/Integrador.Consumidor.Worker.csproj",
+                "${workspaceFolder}/src/Connector.Consumer.Worker/Connector.Consumer.Worker.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -58,7 +58,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/Integrador.Consumidor.Worker/Integrador.Consumidor.Worker.csproj"
+                "${workspaceFolder}/src/Connector.Consumer.Worker/Connector.Consumer.Worker.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
