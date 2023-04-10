@@ -2,6 +2,8 @@
 
 ### Código
 
+- [ ] Injetar config do RabbitMQ
+
 - [ ] Implementar envio em lote para o broker
 
 - [ ] Melhorar interação com o banco de dados
