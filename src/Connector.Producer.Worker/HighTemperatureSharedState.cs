@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Connector.Produtor.Worker;
+namespace Connector.Producer.Worker;
 
 internal sealed class HighTemperatureSharedState
 {

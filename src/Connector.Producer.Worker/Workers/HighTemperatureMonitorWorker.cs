@@ -1,6 +1,6 @@
-﻿using Connector.Produtor.Worker.Infra.Database;
+﻿using Connector.Producer.Worker.Infra.Database;
 
-namespace Connector.Produtor.Worker.Workers;
+namespace Connector.Producer.Worker.Workers;
 
 internal sealed class HighTemperatureMonitorWorker : BackgroundService
 {

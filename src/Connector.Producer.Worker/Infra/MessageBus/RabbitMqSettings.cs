@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Connector.Produtor.Worker.Infra.MessageBus;
+namespace Connector.Producer.Worker.Infra.MessageBus;
 
 internal sealed class RabbitMqSettings
 {

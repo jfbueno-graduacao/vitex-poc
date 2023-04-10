@@ -1,8 +1,8 @@
 ﻿using Connector.Common.MessageBus.Contracts;
-using Connector.Produtor.Worker.Infra.Database;
+using Connector.Producer.Worker.Infra.Database;
 using MassTransit;
 
-namespace Connector.Produtor.Worker.Infra.MessageBus;
+namespace Connector.Producer.Worker.Infra.MessageBus;
 
 internal sealed class TemperatureBusProxy
 {

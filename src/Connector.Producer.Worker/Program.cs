@@ -1,7 +1,7 @@
-using Connector.Produtor.Worker;
-using Connector.Produtor.Worker.Infra.Database;
-using Connector.Produtor.Worker.Infra.MessageBus;
-using Connector.Produtor.Worker.Workers;
+using Connector.Producer.Worker;
+using Connector.Producer.Worker.Infra.Database;
+using Connector.Producer.Worker.Infra.MessageBus;
+using Connector.Producer.Worker.Workers;
 using MassTransit;
 using System.Reflection;
 

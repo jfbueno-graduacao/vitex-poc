@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Connector.Produtor.Worker.Infra.Database;
+namespace Connector.Producer.Worker.Infra.Database;
 
 internal sealed class TemperatureRepository : IDisposable
 {

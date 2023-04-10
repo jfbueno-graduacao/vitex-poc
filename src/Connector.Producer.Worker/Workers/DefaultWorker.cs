@@ -1,7 +1,7 @@
-using Connector.Produtor.Worker.Infra.Database;
-using Connector.Produtor.Worker.Infra.MessageBus;
+using Connector.Producer.Worker.Infra.Database;
+using Connector.Producer.Worker.Infra.MessageBus;
 
-namespace Connector.Produtor.Worker.Workers;
+namespace Connector.Producer.Worker.Workers;
 
 internal sealed class DefaultWorker : BackgroundService
 {
