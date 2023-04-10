@@ -2,7 +2,7 @@
 
 ### Código
 
-- [ ] Injetar config do RabbitMQ
+- [x] Injetar config do RabbitMQ
 
 - [ ] Implementar envio em lote para o broker
 

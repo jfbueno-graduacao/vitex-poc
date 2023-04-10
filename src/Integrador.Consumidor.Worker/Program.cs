@@ -10,11 +10,8 @@ using IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddOptions<InfluxDbSettings>()
             .Bind(context.Configuration.GetSection("InfluxDbConfig"))
-            .ValidateDataAnnotations();
-
-        //services.Configure<InfluxDbSettings>(
-        //    context.Configuration.GetSection("InfluxDbConfig")
-        //);
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         services.AddMassTransit(x =>
         {
