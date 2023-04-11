@@ -2,9 +2,11 @@
 
 ### Código
 
+- [ ] Usar Polly para conectar ao banco
+
 - [x] Injetar config do RabbitMQ
 
-- [ ] Implementar envio em lote para o broker
+- [x] Implementar envio em lote para o broker
 
 - [ ] Melhorar interação com o banco de dados
     - Implementação de UnitOfWork?
@@ -15,9 +17,9 @@
 
 ### Infra
 
-- [ ] Subir SQL Server com criação de base e tabelas (e dados?)
+- [x] Subir SQL Server com criação de base e tabelas (e dados?)
 
-- [ ] Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)
+- [x] Subir tudo via docker-compose pra facilidade de execução (depende de todas as outras acima)
 
 - [x] Subir influx configurado (usuário, senha e db)
 

@@ -1,3 +1,5 @@
+USE VitalSignReadings;
+
 BEGIN TRAN;
 
 DECLARE @PersonCounter INT = 1,

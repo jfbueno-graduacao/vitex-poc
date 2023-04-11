@@ -1,18 +1,6 @@
 version: "3.8"
 
 services:
-  connector-faker:
-    build:
-      context: ./src/Connector.Faker.Worker/
-      dockerfile: Dockerfile
-    container_name: connector-faker
-    environment:
-      - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
-    networks:
-      - network_fog
-    depends_on:
-      - database_fog
-
   connector-consumer:
     build:
       context: ./src/
@@ -31,11 +19,25 @@ services:
       - database_cloud
       - broker_mqtt
 
-  connector-producer-1:
+  connector-faker_dev:
+    image: tcc/connector-faker
+    build:
+      context: ./src/Connector.Faker.Worker/
+      dockerfile: Dockerfile
+    container_name: connector-faker_dev
+    environment:
+      - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
+    networks:
+      - network_fog
+    depends_on:
+      - database_fog
+
+  connector-producer_dev:
+    image: tcc/connector-producer
     build:
       context: ./src/
       dockerfile: Connector.Producer.Worker/Dockerfile
-    container_name: connector-producer-1
+    container_name: connector-producer_dev
     environment:
       - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
       - RabbitMqConfig__Host=broker_mqtt
@@ -49,41 +51,3 @@ services:
     depends_on:
       - database_fog
       - broker_mqtt
-
-  # connector-producer-2:
-  #   build:
-  #     context: ./src/
-  #     dockerfile: Connector.Producer.Worker/Dockerfile
-  #   container_name: connector-producer-2
-  #   environment:
-  #     - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
-  #     - RabbitMqConfig__Host=broker_mqtt
-  #     - RabbitMqConfig__User=admin
-  #     - RabbitMqConfig__Password=EQ3MrrGBwn8bAgaUz9Hjb3LuvP
-  #     - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
-  #     - ConnectorConfig__FogNode__Name=Bairro Centro
-  #   networks:
-  #     - network_fog
-  #     - network_link_fog_cloud
-  #   depends_on:
-  #     - database_fog
-  #     - broker_mqtt
-
-  # connector-producer-3:
-  #   build:
-  #     context: ./src/
-  #     dockerfile: Connector.Producer.Worker/Dockerfile
-  #   container_name: connector-producer-3
-  #   environment:
-  #     - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
-  #     - RabbitMqConfig__Host=broker_mqtt
-  #     - RabbitMqConfig__User=admin
-  #     - RabbitMqConfig__Password=EQ3MrrGBwn8bAgaUz9Hjb3LuvP
-  #     - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
-  #     - ConnectorConfig__FogNode__Name=Bairro Centro
-  #   networks:
-  #     - network_fog
-  #     - network_link_fog_cloud
-  #   depends_on:
-  #     - database_fog
-  #     - broker_mqtt

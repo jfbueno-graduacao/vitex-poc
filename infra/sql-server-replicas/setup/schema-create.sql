@@ -1,5 +1,7 @@
 CREATE DATABASE VitalSignReadings;
 
+GO
+
 USE VitalSignReadings;
 
 DROP TABLE IF EXISTS [Temperature];
@@ -12,13 +14,6 @@ CREATE TABLE [Temperature]
 	[Timestamp] DATETIME2 NOT NULL,
 
 	ReadForIntegration BIT NOT NULL DEFAULT 0
-);
-
-DROP TABLE IF EXISTS [FogNodeMetadata];
-CREATE TABLE [FogNodeMetadata]
-(
-	Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
-	[Name] VARCHAR(MAX) NOT NULL,
 );
 
 DROP TABLE IF EXISTS [People];

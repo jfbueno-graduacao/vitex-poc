@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  database-fog_node-2:
+    user: root
+    build: 
+      context: ./infra/sql-server-replicas/setup/
+      dockerfile: Dockerfile
+    container_name: database_fog_node_2
+    env_file:
+      - replicas-environment-variables/mssql.env
+    ports:
+      - "54340:1433"
+    volumes:
+      - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
+    networks:
+      - network_fog_2
+
+  connector-faker_node-2:
+    image: tcc/connector-faker
+    container_name: connector-faker_node-2
+    environment:
+      - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+    networks:
+      - network_fog_2
+    depends_on:
+      - database-fog_node-2
+
+  connector-producer_node-2:
+    image: tcc/connector-producer
+    container_name: connector-producer_node-2
+    env_file:
+      - replicas-environment-variables/connector-producer.env
+    environment:
+      - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
+      - ConnectorConfig__FogNode__Name=Bairro Centro
+    networks:
+      - network_fog_2
+      - network_link_fog_cloud
+    depends_on:
+      - database-fog_node-2
+      - broker_mqtt
+
+  database-fog_node-3:
+    user: root
+    build: 
+      context: ./infra/sql-server-replicas/setup/
+      dockerfile: Dockerfile
+    container_name: database_fog_node_3
+    env_file:
+      - replicas-environment-variables/mssql.env
+    ports:
+      - "54341:1433"
+    volumes:
+      - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
+    networks:
+      - network_fog_3
+
+  connector-faker_node-3:
+    image: tcc/connector-faker
+    container_name: connector-faker_node-3
+    environment:
+      - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+    networks:
+      - network_fog_3
+    depends_on:
+      - database-fog_node-3
+
+  connector-producer_node-3:
+    image: tcc/connector-producer
+    container_name: connector-producer_node-3
+    env_file:
+      - replicas-environment-variables/connector-producer.env
+    environment:
+      - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectorConfig__FogNode__Id=bcfea54e-3799-4b1a-875f-864c1e5effcd
+      - ConnectorConfig__FogNode__Name=Bairro Restinga
+    networks:
+      - network_fog_3
+      - network_link_fog_cloud
+    depends_on:
+      - database-fog_node-3
+      - broker_mqtt
+
+networks:
+  network_fog_2:
+    driver: bridge
+  network_fog_3:
+    driver: bridge

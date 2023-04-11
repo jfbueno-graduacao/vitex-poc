@@ -27,7 +27,7 @@ services:
       - "54331:1433"
     volumes:
       - ./infra/volumes/fog/mssql:/var/opt/mssql/data/
-      - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf
+      - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
       - network_fog
 
