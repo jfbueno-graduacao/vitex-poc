@@ -14,6 +14,11 @@ using IHost host = Host.CreateDefaultBuilder(args)
         var rabbitMqPass = context.Configuration.GetValue<string>(RabbitMqSettings.PasswordKey)
             ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
 
+        services.AddOptions<ConnectorSettings>()
+            .Bind(context.Configuration.GetSection(ConnectorSettings.ConfigurationKey))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
