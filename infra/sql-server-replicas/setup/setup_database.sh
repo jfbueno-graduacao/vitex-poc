@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
 # Wait for database to startup 
-sleep 15
-./opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P MjJ8U4CZUS3X6y2L -i schema-create.sql
+test-connection() {
+    (/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD -Q 'Select 1' &> /dev/null)
+    echo "$?"
+}
 
-./opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P MjJ8U4CZUS3X6y2L -i seed-people.sql
+while [ $(test-connection) -ne 0 ]; do
+    sleep 2s
+    echo 'Waiting 2 second and trying again'    
+done
+
+echo 'Database is up and running'
+
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD -i schema-create.sql
+
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD -i seed-people.sql
