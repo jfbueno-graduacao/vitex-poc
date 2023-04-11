@@ -25,7 +25,10 @@ internal sealed class TemperatureRepository
         _influxDbSettings = influxDbSettingsOptions.Value;
     }
 
-    public void AddRange(IReadOnlyCollection<Temperature> temperaturesToInsert)
+    public void AddRange(
+        FogNodeMetadata fogNodeMetadata,
+        IReadOnlyCollection<Temperature> temperaturesToInsert
+    )
     {
         using var client = new InfluxDBClient(
             url: _influxDbSettings.Host,
@@ -37,6 +40,8 @@ internal sealed class TemperatureRepository
         var records = temperaturesToInsert.Select(t => 
             PointData.Measurement("temperature")
                 .Tag("personId", t.PersonId.ToString())
+                .Tag("fogNodeId", fogNodeMetadata.Id.ToString())
+                .Tag("fogNodeName", fogNodeMetadata.Name)
                 .Field("value", t.Value)
                 .Timestamp(t.Timestamp, WritePrecision.S)
                 .ToLineProtocol()

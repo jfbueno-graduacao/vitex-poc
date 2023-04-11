@@ -5,6 +5,9 @@ namespace Connector.Producer.Worker;
 internal sealed class ConnectorSettings
 {
     public const string ConfigurationKey = "ConnectorConfig";
+    public const string FogNodeInfoKey = $"{ConfigurationKey}:{nameof(FogNode)}";
+    public const string FogNodeIdKey = $"{FogNodeInfoKey}:{nameof(FogNodeInfo.Id)}";
+    public const string FogNodeNameKey = $"{FogNodeInfoKey}:{nameof(FogNodeInfo.Name)}";
 
     [Required]
     public FogNodeInfo FogNode { get; set; } = default!;

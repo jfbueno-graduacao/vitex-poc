@@ -1,3 +1,4 @@
+using Connector.Common.MessageBus.Contracts.Headers;
 using Connector.Producer.Worker;
 using Connector.Producer.Worker.Infra.Database;
 using Connector.Producer.Worker.Infra.MessageBus;
@@ -13,12 +14,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         
         var rabbitMqPass = context.Configuration.GetValue<string>(RabbitMqSettings.PasswordKey)
             ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
-
-        services.AddOptions<ConnectorSettings>()
-            .Bind(context.Configuration.GetSection(ConnectorSettings.ConfigurationKey))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
-
+        
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
@@ -41,6 +37,11 @@ using IHost host = Host.CreateDefaultBuilder(args)
                 });
 
                 busConfigurator.ConfigureEndpoints(busRegistrationContext);
+
+                busConfigurator.ConfigurePublish(pipeConfigurator =>
+                {
+                    pipeConfigurator.UseFogNodeMetadataHeaders(context.Configuration);
+                });
             });
         });
 

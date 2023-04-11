@@ -1,8 +1,10 @@
 ﻿using Connector.Common.MessageBus.Contracts;
+using Connector.Common.MessageBus.Contracts.Headers;
 using Connector.Consumer.Worker.Infra.InfluxDb;
 using Connector.Consumer.Worker.Infra.Model;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,7 +34,13 @@ internal sealed class RegisterTemperatureBatchConsumer : IConsumer<TemperatureBa
             t.Id, t.PersonId, t.Value, t.Timestamp
         )).ToArray();
 
-        _repository.AddRange(temperatures);
+        var headers = context.Headers;
+        var fogNodeMetada = new FogNodeMetadata(
+            headers.Get<string>(HeaderKeys.FogNodeId) ?? string.Empty,
+            headers.Get<string>(HeaderKeys.FogNodeName) ?? string.Empty
+        );
+
+        _repository.AddRange(fogNodeMetada, temperatures);
 
         _logger.LogInformation(
             "Inserted new {count} items",
