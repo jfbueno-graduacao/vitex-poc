@@ -1,8 +1,11 @@
+using Connector.Common.MessageBus.Config;
 using Connector.Consumer.Worker.Infra.InfluxDb;
 using Connector.Consumer.Worker.RegisterTemperatureBatch;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Reflection;
 
 using IHost host = Host.CreateDefaultBuilder(args)
@@ -29,10 +32,12 @@ using IHost host = Host.CreateDefaultBuilder(args)
 
             x.UsingRabbitMq((busRegistrationContext, busConfigurator) =>
             {
-                busConfigurator.Host("localhost", "/", hostConfigurator =>
+                var config = GetRabbitMqConfig(context.Configuration);
+
+                busConfigurator.Host(config.host, "/", hostConfigurator =>
                 {
-                    hostConfigurator.Username("admin");
-                    hostConfigurator.Password("EQ3MrrGBwn8bAgaUz9Hjb3LuvP");
+                    hostConfigurator.Username(config.user);
+                    hostConfigurator.Password(config.password);
                 });
 
                 busConfigurator.ConfigureEndpoints(busRegistrationContext);
@@ -44,3 +49,17 @@ using IHost host = Host.CreateDefaultBuilder(args)
     .Build();
 
 await host.RunAsync();
+
+static (string host, string user, string password) GetRabbitMqConfig(IConfiguration configuration)
+{
+    var rabbitMqHost = configuration.GetValue<string>(RabbitMqSettings.HostKey)
+                       ?? throw new InvalidOperationException("RabbitMqConfig Host is not set");
+
+    var rabbitMqUser = configuration.GetValue<string>(RabbitMqSettings.UserKey)
+                       ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
+
+    var rabbitMqPass = configuration.GetValue<string>(RabbitMqSettings.PasswordKey)
+                       ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
+
+    return (rabbitMqHost, rabbitMqUser, rabbitMqPass);
+}

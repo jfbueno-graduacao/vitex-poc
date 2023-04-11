@@ -57,7 +57,6 @@ services:
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
       - DOCKER_INFLUXDB_INIT_PASSWORD=Pass123#
     volumes:
-      # - ./infra/influxdb/config.yml:/etc/influxdb/config.yml:ro
       - ./infra/volumes/cloud/influxdb:/var/lib/influxdb2
     networks:
       - network_cloud
@@ -74,18 +73,6 @@ services:
       - ./infra/volumes/cloud/grafana/data:/var/lib/grafana
       - ./infra/volumes/cloud/grafana/plugins:/var/lib/grafana/plugins
       - ./infra/volumes/cloud/grafana/provisioning:/etc/grafana/provisioning 
-
-  # integrador-faker:
-  #   build:
-  #     context: ./src/Integrador.Faker.Worker/
-  #     dockerfile: Dockerfile
-  #   container_name: integrador-faker
-  #   environment:
-  #     - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;
-  #   networks:
-  #     - network_fog
-  #   depends_on:
-  #     - database_fog
 
 networks:
   network_link_fog_cloud:

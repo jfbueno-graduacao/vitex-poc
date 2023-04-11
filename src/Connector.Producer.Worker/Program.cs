@@ -1,4 +1,4 @@
-using Connector.Common.MessageBus.Contracts.Headers;
+using Connector.Common.MessageBus.Config;
 using Connector.Producer.Worker;
 using Connector.Producer.Worker.Infra.Database;
 using Connector.Producer.Worker.Infra.MessageBus;
@@ -9,12 +9,6 @@ using System.Reflection;
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var rabbitMqUser = context.Configuration.GetValue<string>(RabbitMqSettings.UserKey)
-            ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
-        
-        var rabbitMqPass = context.Configuration.GetValue<string>(RabbitMqSettings.PasswordKey)
-            ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
-        
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
@@ -27,13 +21,15 @@ using IHost host = Host.CreateDefaultBuilder(args)
             x.AddSagaStateMachines(entryAssembly);
             x.AddSagas(entryAssembly);
             x.AddActivities(entryAssembly);
-            
+
             x.UsingRabbitMq((busRegistrationContext, busConfigurator) =>
             {
-                busConfigurator.Host("localhost", "/", hostConfigurator =>
+                var config = GetRabbitMqConfig(context.Configuration);
+
+                busConfigurator.Host(config.host, "/", hostConfigurator =>
                 {
-                    hostConfigurator.Username(rabbitMqUser);
-                    hostConfigurator.Password(rabbitMqPass);
+                    hostConfigurator.Username(config.user);
+                    hostConfigurator.Password(config.password);
                 });
 
                 busConfigurator.ConfigureEndpoints(busRegistrationContext);
@@ -57,3 +53,17 @@ using IHost host = Host.CreateDefaultBuilder(args)
     .Build();
 
 await host.RunAsync();
+
+static (string host, string user, string password) GetRabbitMqConfig(IConfiguration configuration)
+{
+    var rabbitMqHost = configuration.GetValue<string>(RabbitMqSettings.HostKey)
+                       ?? throw new InvalidOperationException("RabbitMqConfig Host is not set");
+
+    var rabbitMqUser = configuration.GetValue<string>(RabbitMqSettings.UserKey)
+                       ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
+
+    var rabbitMqPass = configuration.GetValue<string>(RabbitMqSettings.PasswordKey)
+                       ?? throw new InvalidOperationException("RabbitMqConfig User is not set");
+
+    return (rabbitMqHost, rabbitMqUser, rabbitMqPass);
+}
