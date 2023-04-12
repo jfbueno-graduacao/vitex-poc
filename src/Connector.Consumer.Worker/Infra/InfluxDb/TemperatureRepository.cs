@@ -40,8 +40,10 @@ internal sealed class TemperatureRepository
         var records = temperaturesToInsert.Select(t => 
             PointData.Measurement("temperature")
                 .Tag("personId", t.PersonId.ToString())
-                .Tag("fogNodeId", fogNodeMetadata.Id.ToString())
+                .Tag("fogNodeId", fogNodeMetadata.Id)
                 .Tag("fogNodeName", fogNodeMetadata.Name)
+                .Tag("latitude", fogNodeMetadata.Latitude?.ToString())
+                .Tag("longitude", fogNodeMetadata.Longitude?.ToString())
                 .Field("value", t.Value)
                 .Timestamp(t.Timestamp, WritePrecision.S)
                 .ToLineProtocol()

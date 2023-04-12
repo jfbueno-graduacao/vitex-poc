@@ -15,6 +15,8 @@ services:
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
       - network_fog_2
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SQL_SERVER_REPLICA_PASSWORD} -Q 'select 1'
 
   connector-faker_node-2:
     image: tcc/connector-faker
@@ -24,8 +26,9 @@ services:
     networks:
       - network_fog_2
     depends_on:
-      - database-fog_node-2
-
+      database-fog_node-2:
+        condition: service_healthy
+  
   connector-producer_node-2:
     image: tcc/connector-producer
     container_name: connector-producer_node-2
@@ -34,13 +37,17 @@ services:
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
-      - ConnectorConfig__FogNode__Name=Bairro Centro
+      - ConnectorConfig__FogNode__Name=Roselândia
+      - ConnectorConfig__FogNode__Latitude=-29.648223 
+      - ConnectorConfig__FogNode__Longitude=-51.139571
     networks:
       - network_fog_2
       - network_link_fog_cloud
     depends_on:
-      - database-fog_node-2
-      - broker_mqtt
+      broker_mqtt:
+        condition: service_started
+      database-fog_node-2:
+        condition: service_healthy
 
   database-fog_node-3:
     user: root
@@ -56,6 +63,8 @@ services:
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
       - network_fog_3
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SQL_SERVER_REPLICA_PASSWORD} -Q 'select 1'
 
   connector-faker_node-3:
     image: tcc/connector-faker
@@ -65,7 +74,8 @@ services:
     networks:
       - network_fog_3
     depends_on:
-      - database-fog_node-3
+      database-fog_node-3:
+        condition: service_healthy
 
   connector-producer_node-3:
     image: tcc/connector-producer
@@ -75,13 +85,17 @@ services:
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=bcfea54e-3799-4b1a-875f-864c1e5effcd
-      - ConnectorConfig__FogNode__Name=Bairro Restinga
+      - ConnectorConfig__FogNode__Name=Canudos
+      - ConnectorConfig__FogNode__Latitude=-29.674966
+      - ConnectorConfig__FogNode__Longitude=-51.096831
     networks:
       - network_fog_3
       - network_link_fog_cloud
     depends_on:
-      - database-fog_node-3
-      - broker_mqtt
+      broker_mqtt:
+        condition: service_started
+      database-fog_node-3:
+        condition: service_healthy
 
 networks:
   network_fog_2:

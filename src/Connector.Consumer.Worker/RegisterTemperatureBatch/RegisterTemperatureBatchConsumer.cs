@@ -37,7 +37,9 @@ internal sealed class RegisterTemperatureBatchConsumer : IConsumer<TemperatureBa
         var headers = context.Headers;
         var fogNodeMetada = new FogNodeMetadata(
             headers.Get<string>(HeaderKeys.FogNodeId) ?? string.Empty,
-            headers.Get<string>(HeaderKeys.FogNodeName) ?? string.Empty
+            headers.Get<string>(HeaderKeys.FogNodeName) ?? string.Empty,
+            headers.Get<double>(HeaderKeys.FogNodeLatitude),
+            headers.Get<double>(HeaderKeys.FogNodeLongitude)
         );
 
         _repository.AddRange(fogNodeMetada, temperatures);

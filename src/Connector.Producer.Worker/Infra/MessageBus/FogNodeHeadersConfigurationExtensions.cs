@@ -15,11 +15,22 @@ internal static class FogNodeHeadersConfigurationExtensions
 
         var fogNodeName = configuration.GetValue<string>(ConnectorSettings.FogNodeNameKey)
             ?? "<unspecified>";
+
+        var coordinates = (
+            latitude: configuration.GetValue<double>(ConnectorSettings.FogNodeLatitudeKey),
+            longitude: configuration.GetValue<double>(ConnectorSettings.FogNodeLongitudeKey)
+        );
         
         pipeConfigurator.UseExecute(publishContext =>
         {
             publishContext.Headers.Set(HeaderKeys.FogNodeId, fogNodeId);
             publishContext.Headers.Set(HeaderKeys.FogNodeName, fogNodeName);
+            
+            if (coordinates is not (0d, 0d))
+            {
+                publishContext.Headers.Set(HeaderKeys.FogNodeLatitude, coordinates.latitude);
+                publishContext.Headers.Set(HeaderKeys.FogNodeLongitude, coordinates.longitude);
+            }
         });
     }
 }

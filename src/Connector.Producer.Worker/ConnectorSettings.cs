@@ -8,6 +8,8 @@ internal sealed class ConnectorSettings
     public const string FogNodeInfoKey = $"{ConfigurationKey}:{nameof(FogNode)}";
     public const string FogNodeIdKey = $"{FogNodeInfoKey}:{nameof(FogNodeInfo.Id)}";
     public const string FogNodeNameKey = $"{FogNodeInfoKey}:{nameof(FogNodeInfo.Name)}";
+    public const string FogNodeLatitudeKey = $"{FogNodeInfoKey}:{nameof(FogNodeInfo.Latitude)}";
+    public const string FogNodeLongitudeKey = $"{FogNodeInfoKey}:{nameof(FogNodeInfo.Longitude)}";
 
     [Required]
     public FogNodeInfo FogNode { get; set; } = default!;
@@ -24,4 +26,7 @@ internal sealed class FogNodeInfo
 
     [Required]
     public string Name { get; set; } = "";
+
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 }
