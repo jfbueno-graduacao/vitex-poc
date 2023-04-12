@@ -4,11 +4,18 @@ using Connector.Producer.Worker.Infra.Database;
 using Connector.Producer.Worker.Infra.MessageBus;
 using Connector.Producer.Worker.Workers;
 using MassTransit;
+using System.Net.Mail;
 using System.Reflection;
+using System.Text;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
+        services.AddOptions<ConnectorSettings>()
+            .Bind(context.Configuration.GetSection("ConnectorConfig"))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
@@ -44,11 +51,19 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<DefaultWorker>();
         services.AddHostedService<HighTemperatureMonitorWorker>();
         services.AddHostedService<HighTemperatureWorker>();
+        services.AddHostedService<AlertWorker>();
 
         services.AddTransient<TemperatureRepository>();
         services.AddTransient<TemperatureBusProxy>();
 
         services.AddSingleton<HighTemperatureSharedState>();
+
+        services.AddTransient(_ => new SmtpClient("localhost", 1025));
+        services.AddSingleton(_ => new MailAddress(
+            "minha-historia-digital@unisinos.br",
+            "Minha História Digital",
+            Encoding.UTF8
+        ));
     })
     .Build();
 

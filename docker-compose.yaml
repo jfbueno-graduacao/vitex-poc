@@ -74,6 +74,15 @@ services:
       - ./infra/volumes/cloud/grafana/plugins:/var/lib/grafana/plugins
       - ./infra/volumes/cloud/grafana/provisioning:/etc/grafana/provisioning 
 
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - network_fog
+
 networks:
   network_link_fog_cloud:
     driver: bridge
