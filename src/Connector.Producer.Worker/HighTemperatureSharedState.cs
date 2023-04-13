@@ -4,8 +4,9 @@ namespace Connector.Producer.Worker;
 
 internal sealed class HighTemperatureSharedState
 {
-    private List<Guid[]> _pastStates = new();
+    private readonly object _previousStates = new();
 
+    private readonly List<Guid[]> _pastStates = new();
     private ConcurrentBag<Guid> _state = new();
 
     /// <summary>
@@ -38,14 +39,26 @@ internal sealed class HighTemperatureSharedState
         _state.Clear();
     }
 
-    public void ResetHistory() => _pastStates.Clear();
-    
+    public void ResetHistory()
+    {
+        lock (_previousStates)
+        {
+            _pastStates.Clear();
+        }
+    }
+
     public Guid[] GetRepeatedValues(int threshold)
     {
-        if (_pastStates is not { Count: > 0 })
+        Guid[][] previousStates;
+        lock (_previousStates)
+        {
+            previousStates = _pastStates.ToArray();
+        }
+
+        if (previousStates is not { Length: > 0 })
             return Array.Empty<Guid>();
 
-        return _pastStates.SelectMany(g => g)
+        return previousStates.SelectMany(g => g)
             .GroupBy(g => g)
             .Select(grp => new { Value = grp.Key, Count = grp.Count() })
             .Where(x => x.Count >= threshold)
@@ -54,5 +67,13 @@ internal sealed class HighTemperatureSharedState
     }
 
     private void SavePastState()
-        => _pastStates.Add(_state.ToArray());
+    {
+        if (_state.IsEmpty) 
+            return;
+
+        lock (_previousStates)
+        {
+            _pastStates.Add(_state.ToArray());
+        }
+    }
 }

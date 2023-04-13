@@ -8,18 +8,15 @@ internal class AlertWorker : BackgroundService
 {
     private readonly ConnectorSettings _connectorSettings;
     private readonly HighTemperatureSharedState _highTemperatureSharedState;
-    private readonly SmtpClient _smtpClient;
     private readonly MailAddress _senderMailAddress;
 
     public AlertWorker(
         IOptions<ConnectorSettings> connectorSettingsOptions,
-        HighTemperatureSharedState highTemperatureSharedState, 
-        SmtpClient smtpClient,
+        HighTemperatureSharedState highTemperatureSharedState,
         MailAddress senderMailAddress
     )
     {
         _highTemperatureSharedState = highTemperatureSharedState;
-        _smtpClient = smtpClient;
         _senderMailAddress = senderMailAddress;
         _connectorSettings = connectorSettingsOptions.Value;
     }
@@ -45,12 +42,13 @@ internal class AlertWorker : BackgroundService
                     SubjectEncoding = Encoding.UTF8
                 };
 
-                await _smtpClient.SendMailAsync(message, CancellationToken.None);
+                using var smtpClient = new SmtpClient("localhost", 1025);
+                await smtpClient.SendMailAsync(message, CancellationToken.None);
 
                 _highTemperatureSharedState.ResetHistory();
             }
 
-            await Task.Delay(5_000 * 60, stoppingToken);
+            await Task.Delay(120_000, stoppingToken);
         }
     }
 }
