@@ -25,12 +25,11 @@ internal sealed class TemperatureRepository : IDisposable
     /// <returns>Lista de registro de temperaturas para serem integradas</returns>
     public async Task<IReadOnlyCollection<Temperature>> GetNotIntegratedValues()
     {
-        // TODO: Remover '*'
         IEnumerable<Temperature>? data = await _connection.QueryAsync<Temperature>(
             @"
                 DROP TABLE IF EXISTS #Values;
             
-                SELECT TOP 250 * INTO #Values
+                SELECT TOP 500 * INTO #Values
                 FROM [Temperature] 
                 WHERE ReadForIntegration = 0 ORDER BY [Timestamp] ASC;
 
