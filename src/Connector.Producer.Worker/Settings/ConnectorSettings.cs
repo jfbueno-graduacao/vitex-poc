@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Connector.Producer.Worker;
+namespace Connector.Producer.Worker.Settings;
 
 internal sealed class ConnectorSettings
 {

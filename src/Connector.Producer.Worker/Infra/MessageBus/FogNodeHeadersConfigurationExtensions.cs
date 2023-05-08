@@ -1,4 +1,5 @@
 ﻿using Connector.Common.MessageBus.Contracts.Headers;
+using Connector.Producer.Worker.Settings;
 using MassTransit;
 
 namespace Connector.Producer.Worker.Infra.MessageBus;

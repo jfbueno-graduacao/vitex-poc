@@ -47,6 +47,8 @@ services:
       - ConnectorConfig__FogNode__Name=Ed. Columbia
       - ConnectorConfig__FogNode__Latitude=-29.687997
       - ConnectorConfig__FogNode__Longitude=-51.129529
+      - AlertsConfig__SmtpHost=maildev
+      - AlertsConfig__SmtpPort=1025
     networks:
       - network_fog
       - network_link_fog_cloud

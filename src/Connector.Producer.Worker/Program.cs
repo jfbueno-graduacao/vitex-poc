@@ -2,6 +2,7 @@ using Connector.Common.MessageBus.Config;
 using Connector.Producer.Worker;
 using Connector.Producer.Worker.Infra.Database;
 using Connector.Producer.Worker.Infra.MessageBus;
+using Connector.Producer.Worker.Settings;
 using Connector.Producer.Worker.Workers;
 using MassTransit;
 using System.Net.Mail;
@@ -13,6 +14,11 @@ using IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddOptions<ConnectorSettings>()
             .Bind(context.Configuration.GetSection("ConnectorConfig"))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<AlertsSettings>()
+            .Bind(context.Configuration.GetSection("AlertsConfig"))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
@@ -58,7 +64,6 @@ using IHost host = Host.CreateDefaultBuilder(args)
 
         services.AddSingleton<HighTemperatureSharedState>();
 
-        services.AddTransient(_ => new SmtpClient("localhost", 1025));
         services.AddSingleton(_ => new MailAddress(
             "minha-historia-digital@unisinos.br",
             "Minha História Digital",
