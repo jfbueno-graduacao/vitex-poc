@@ -82,8 +82,6 @@ services:
       - "1025:1025"
     networks:
       - network_fog
-      - network_fog_2
-      - network_fog_3 
 
 networks:
   network_link_fog_cloud:

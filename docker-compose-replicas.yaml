@@ -43,6 +43,7 @@ services:
     networks:
       - network_fog_2
       - network_link_fog_cloud
+      - network_fog # Apenas para integração de alertas em desenvolvimento
     depends_on:
       broker_mqtt:
         condition: service_started
@@ -91,6 +92,7 @@ services:
     networks:
       - network_fog_3
       - network_link_fog_cloud
+      - network_fog # Apenas para integração de alertas em desenvolvimento
     depends_on:
       broker_mqtt:
         condition: service_started
