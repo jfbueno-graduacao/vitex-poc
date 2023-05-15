@@ -1,0 +1,32 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    defaults: 
+      run:
+        working-directory: ./src/Connector.Consumer.Worker/
+        
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Publish
+      run: dotnet publish -c Release
+    - name: Upload release
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        path: /home/runner/work/TCC/TCC/src/Connector.Consumer.Worker/bin/Release/net7.0/
+    
