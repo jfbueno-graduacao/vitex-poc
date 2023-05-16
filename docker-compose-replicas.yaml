@@ -33,7 +33,7 @@ services:
     image: tcc/connector-producer
     container_name: connector-producer_node-2
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
@@ -82,7 +82,7 @@ services:
     image: tcc/connector-producer
     container_name: connector-producer_node-3
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=bcfea54e-3799-4b1a-875f-864c1e5effcd
