@@ -1,157 +1,157 @@
 version: "3.8"
 
 services:
-  database-fog_node-2:
+  database-fog_node-5:
     user: root
     build: 
       context: ./infra/sql-server-replicas/setup/
       dockerfile: Dockerfile
-    container_name: database_fog_node_2
+    container_name: database_fog_node_5
     env_file:
       - replicas-environment-variables/mssql.env
     ports:
-      - "54340:1433"
+      - "54345:1433"
     volumes:
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
-      - network_fog_2
+      - network_fog_5
     healthcheck:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SQL_SERVER_REPLICA_PASSWORD} -Q 'select 1'
 
-  connector-faker_node-2:
+  connector-faker_node-5:
     image: tcc/connector-faker
-    container_name: connector-faker_node-2
+    container_name: connector-faker_node-5
     environment:
-      - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=database-fog_node-5;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
     networks:
-      - network_fog_2
+      - network_fog_5
     depends_on:
-      database-fog_node-2:
+      database-fog_node-5:
         condition: service_healthy
   
-  connector-producer_node-2:
+  connector-producer_node-5:
     image: tcc/connector-producer
-    container_name: connector-producer_node-2
+    container_name: connector-producer_node-5
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
-      - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
-      - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
-      - ConnectorConfig__FogNode__Name=Roselândia
+      - ConnectionStrings__Default=Server=database-fog_node-5;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectorConfig__FogNode__Id=e84b1243-ca48-499c-9c44-5dbacf188aff
+      - ConnectorConfig__FogNode__Name=Rôndonia
       - ConnectorConfig__FogNode__Latitude=-29.648223 
       - ConnectorConfig__FogNode__Longitude=-51.139571
     networks:
-      - network_fog_2
+      - network_fog_5
       - network_link_fog_cloud
       - network_fog # Apenas para integração de alertas em desenvolvimento
     depends_on:
       broker_mqtt:
         condition: service_started
-      database-fog_node-2:
+      database-fog_node-5:
         condition: service_healthy
 
-  database-fog_node-3:
+  database-fog_node-6:
     user: root
     build: 
       context: ./infra/sql-server-replicas/setup/
       dockerfile: Dockerfile
-    container_name: database_fog_node_3
+    container_name: database_fog_node_6
     env_file:
       - replicas-environment-variables/mssql.env
     ports:
-      - "54341:1433"
+      - "54346:1433"
     volumes:
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
-      - network_fog_3
+      - network_fog_6
     healthcheck:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SQL_SERVER_REPLICA_PASSWORD} -Q 'select 1'
 
-  connector-faker_node-3:
+  connector-faker_node-6:
     image: tcc/connector-faker
-    container_name: connector-faker_node-3
+    container_name: connector-faker_node-6
     environment:
-      - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=database-fog_node-6;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
     networks:
-      - network_fog_3
+      - network_fog_6
     depends_on:
-      database-fog_node-3:
+      database-fog_node-6:
         condition: service_healthy
 
-  connector-producer_node-3:
+  connector-producer_node-6:
     image: tcc/connector-producer
-    container_name: connector-producer_node-3
+    container_name: connector-producer_node-6
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
-      - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
-      - ConnectorConfig__FogNode__Id=bcfea54e-3799-4b1a-875f-864c1e5effcd
-      - ConnectorConfig__FogNode__Name=Canudos
+      - ConnectionStrings__Default=Server=database-fog_node-6;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectorConfig__FogNode__Id=80c1ff23-38c5-4964-bbb7-2c4afeeb974b
+      - ConnectorConfig__FogNode__Name=Ideal
       - ConnectorConfig__FogNode__Latitude=-29.674966
       - ConnectorConfig__FogNode__Longitude=-51.096831
     networks:
-      - network_fog_3
+      - network_fog_6
       - network_link_fog_cloud
       - network_fog # Apenas para integração de alertas em desenvolvimento
     depends_on:
       broker_mqtt:
         condition: service_started
-      database-fog_node-3:
+      database-fog_node-6:
         condition: service_healthy
 
-  database-fog_node-4:
+  database-fog_node-7:
     user: root
     build: 
       context: ./infra/sql-server-replicas/setup/
       dockerfile: Dockerfile
-    container_name: database_fog_node_4
+    container_name: database_fog_node_7
     env_file:
       - replicas-environment-variables/mssql.env
     ports:
-      - "54342:1433"
+      - "54347:1433"
     volumes:
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
-      - network_fog_4
+      - network_fog_7
     healthcheck:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SQL_SERVER_REPLICA_PASSWORD} -Q 'select 1'
 
-  connector-faker_node-4:
+  connector-faker_node-7:
     image: tcc/connector-faker
-    container_name: connector-faker_node-4
+    container_name: connector-faker_node-7
     environment:
-      - ConnectionStrings__Default=Server=database-fog_node-4;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=database-fog_node-7;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
     networks:
-      - network_fog_4
+      - network_fog_7
     depends_on:
-      database-fog_node-4:
+      database-fog_node-7:
         condition: service_healthy
 
-  connector-producer_node-4:
+  connector-producer_node-7:
     image: tcc/connector-producer
-    container_name: connector-producer_node-4
+    container_name: connector-producer_node-7
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
-      - ConnectionStrings__Default=Server=database-fog_node-4;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
-      - ConnectorConfig__FogNode__Id=4b227aed-68fa-4198-8e26-1df6d66c213f
-      - ConnectorConfig__FogNode__Name=Rincão
+      - ConnectionStrings__Default=Server=database-fog_node-7;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
+      - ConnectorConfig__FogNode__Id=d462eb0b-c9b1-4f6f-a6b9-d8fa767c4cab
+      - ConnectorConfig__FogNode__Name=Liberdade
       - ConnectorConfig__FogNode__Latitude=-29.674966
       - ConnectorConfig__FogNode__Longitude=-51.096831
     networks:
-      - network_fog_4
+      - network_fog_7
       - network_link_fog_cloud
       - network_fog # Apenas para integração de alertas em desenvolvimento
     depends_on:
       broker_mqtt:
         condition: service_started
-      database-fog_node-4:
+      database-fog_node-7:
         condition: service_healthy
 
 networks:
-  network_fog_2:
+  network_fog_5:
     driver: bridge
-  network_fog_3:
+  network_fog_6:
     driver: bridge
-  network_fog_4:
+  network_fog_7:
     driver: bridge

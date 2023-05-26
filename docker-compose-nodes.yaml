@@ -26,7 +26,7 @@ services:
       dockerfile: Dockerfile
     container_name: connector-faker_dev
     environment:
-      - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
     networks:
       - network_fog
     depends_on:
@@ -39,9 +39,9 @@ services:
       dockerfile: Connector.Producer.Worker/Dockerfile
     container_name: connector-producer_dev
     env_file:
-      - replicas-environment-variables/connector-producer-prod.env
+      - replicas-environment-variables/connector-producer.env
     environment:
-      - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=4eFmpjPQLJK2NsoPrBQugHjo;TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=database_fog;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
       - ConnectorConfig__FogNode__Name=Ed. Columbia
       - ConnectorConfig__FogNode__Latitude=-29.687997

@@ -17,19 +17,20 @@ services:
 
   database_fog:
     user: root
-    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    build: 
+      context: ./infra/sql-server-replicas/setup/
+      dockerfile: Dockerfile
     container_name: database_fog
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=4eFmpjPQLJK2NsoPrBQugHjo
-      - MSSQL_PID=Developer
+    env_file:
+      - replicas-environment-variables/mssql.env
     ports:
       - "54331:1433"
     volumes:
-      - ./infra/volumes/fog/mssql:/var/opt/mssql/data/
       - ./infra/sqlserver-fog/mssql.conf:/var/opt/mssql/mssql.conf:ro
     networks:
       - network_fog
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SQL_SERVER_REPLICA_PASSWORD} -Q 'select 1'
 
   dashboards_fog:
     image: grafana/grafana:9.4.3
