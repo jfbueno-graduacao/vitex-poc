@@ -40,6 +40,15 @@ using IHost host = Host.CreateDefaultBuilder(args)
                     hostConfigurator.Password(config.password);
                 });
 
+                // TODO: Use ILogger here
+                const int prefetchCount = 210;
+                Console.WriteLine($"Setting PrefetchCount to {prefetchCount}");
+                busConfigurator.PrefetchCount = prefetchCount;
+
+                const int concurrencyLimit = 150;
+                Console.WriteLine($"Setting UseConcurrencyLimit to {concurrencyLimit}");
+                busConfigurator.UseConcurrencyLimit(concurrencyLimit);
+
                 busConfigurator.ConfigureEndpoints(busRegistrationContext);
             });
         });
