@@ -6,3 +6,8 @@
 infra/volumes/
 
 .aws/
+.releases/
+
+replicas-environment-variables/connector-producer-prod.env
+replicas-environment-variables/connector-producer-use.env
+appsettings.*Production.json
