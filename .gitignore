@@ -11,3 +11,5 @@ infra/volumes/
 replicas-environment-variables/connector-producer-prod.env
 replicas-environment-variables/connector-producer-use.env
 appsettings.*Production.json
+
+*.csproj.user
