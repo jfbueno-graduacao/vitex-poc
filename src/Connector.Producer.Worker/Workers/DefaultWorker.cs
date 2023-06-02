@@ -37,7 +37,7 @@ internal sealed class DefaultWorker : BackgroundService
                 await _messageBusProxy.Publish(temperatureReadings, stoppingToken);
             }
 
-            await Task.Delay(60_000 * 1, stoppingToken);
+            await Task.Delay(5_000, stoppingToken);
         }
     }
 
