@@ -28,6 +28,7 @@ services:
     depends_on:
       database-fog_node-5:
         condition: service_healthy
+    restart: unless-stopped
   
   connector-producer_node-5:
     image: tcc/connector-producer
@@ -49,6 +50,7 @@ services:
         condition: service_started
       database-fog_node-5:
         condition: service_healthy
+    restart: unless-stopped
 
   database-fog_node-6:
     user: root
@@ -76,7 +78,8 @@ services:
       - network_fog_6
     depends_on:
       database-fog_node-6:
-        condition: service_healthy
+        condition: service_healthy    
+    restart: unless-stopped
 
   connector-producer_node-6:
     image: tcc/connector-producer
@@ -97,7 +100,8 @@ services:
       broker_mqtt:
         condition: service_started
       database-fog_node-6:
-        condition: service_healthy
+        condition: service_healthy    
+    restart: unless-stopped
 
   database-fog_node-7:
     user: root
@@ -125,7 +129,8 @@ services:
       - network_fog_7
     depends_on:
       database-fog_node-7:
-        condition: service_healthy
+        condition: service_healthy    
+    restart: unless-stopped
 
   connector-producer_node-7:
     image: tcc/connector-producer
@@ -146,7 +151,8 @@ services:
       broker_mqtt:
         condition: service_started
       database-fog_node-7:
-        condition: service_healthy
+        condition: service_healthy    
+    restart: unless-stopped
 
 networks:
   network_fog_5:

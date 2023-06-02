@@ -27,13 +27,14 @@ services:
       - network_fog_2
     depends_on:
       database-fog_node-2:
-        condition: service_healthy
+        condition: service_healthy    
+    restart: unless-stopped
   
   connector-producer_node-2:
     image: tcc/connector-producer
     container_name: connector-producer_node-2
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-2;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=40c35b8e-362f-4940-8eaf-b34621371b88
@@ -48,7 +49,8 @@ services:
       broker_mqtt:
         condition: service_started
       database-fog_node-2:
-        condition: service_healthy
+        condition: service_healthy    
+    restart: unless-stopped
 
   database-fog_node-3:
     user: root
@@ -77,12 +79,13 @@ services:
     depends_on:
       database-fog_node-3:
         condition: service_healthy
+    restart: unless-stopped
 
   connector-producer_node-3:
     image: tcc/connector-producer
     container_name: connector-producer_node-3
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-3;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=bcfea54e-3799-4b1a-875f-864c1e5effcd
@@ -98,6 +101,7 @@ services:
         condition: service_started
       database-fog_node-3:
         condition: service_healthy
+    restart: unless-stopped
 
   database-fog_node-4:
     user: root
@@ -126,12 +130,13 @@ services:
     depends_on:
       database-fog_node-4:
         condition: service_healthy
+    restart: unless-stopped
 
   connector-producer_node-4:
     image: tcc/connector-producer
     container_name: connector-producer_node-4
     env_file:
-      - replicas-environment-variables/connector-producer.env
+      - replicas-environment-variables/connector-producer-prod.env
     environment:
       - ConnectionStrings__Default=Server=database-fog_node-4;Database=VitalSignReadings;User=sa;Password=${SQL_SERVER_REPLICA_PASSWORD};TrustServerCertificate=True;
       - ConnectorConfig__FogNode__Id=4b227aed-68fa-4198-8e26-1df6d66c213f
@@ -147,6 +152,7 @@ services:
         condition: service_started
       database-fog_node-4:
         condition: service_healthy
+    restart: unless-stopped
 
 networks:
   network_fog_2:
