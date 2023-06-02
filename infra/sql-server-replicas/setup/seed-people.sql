@@ -3,7 +3,7 @@ USE VitalSignReadings;
 BEGIN TRAN;
 
 DECLARE @PersonCounter INT = 1,
-		@PersonsToInsert INT = 100;
+		@PersonsToInsert INT = 2500;
 
 DECLARE @MinTemperature DECIMAL = 36.1,
 		@MaxTemperature DECIMAL = 37.8;
