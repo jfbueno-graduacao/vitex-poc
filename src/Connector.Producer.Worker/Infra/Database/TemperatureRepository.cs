@@ -29,8 +29,13 @@ internal sealed class TemperatureRepository : IDisposable
             @"
                 DROP TABLE IF EXISTS #Values;
             
-                SELECT TOP 500 * INTO #Values
-                FROM [Temperature] 
+                SELECT TOP 500 
+                    T.Id,
+	                T.PersonId,
+	                T.[Value],
+	                T.[Timestamp]
+                INTO #Values
+                FROM [Temperature] T
                 WHERE ReadForIntegration = 0 ORDER BY [Timestamp] ASC;
 
                 UPDATE [Temperature]
@@ -74,8 +79,15 @@ internal sealed class TemperatureRepository : IDisposable
             @"
                 DROP TABLE IF EXISTS #HighTempValues;
             
-                SELECT TOP 75 * INTO #HighTempValues
-                FROM [Temperature] 
+                SELECT TOP 75 
+                    T.Id,
+	                T.PersonId,
+	                T.[Value],
+	                T.[Timestamp],
+	                DATEDIFF(YEAR, CONVERT(DATETIME, P.BirthDate), GETDATE()) AS [PersonAge]
+                INTO #HighTempValues
+                FROM [Temperature] T
+                INNER JOIN [People] P ON T.PersonId = P.Id
                 WHERE ReadForIntegration = 0 
                 AND PersonId IN @ids
                 ORDER BY [Timestamp] ASC;
